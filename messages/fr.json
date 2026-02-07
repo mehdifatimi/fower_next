@@ -5,6 +5,93 @@
       "title": "L'élégance à fleur de peau",
       "subtitle": "Découvrez nos créations florales artisanales pour vos moments d'exception.",
       "cta": "Voir la boutique"
+    },
+    "featured": {
+      "badge": "Sélection Exclusive",
+      "title": "Nos Fleurs Vedettes"
+    },
+    "about": {
+      "badge": "Notre Histoire",
+      "title": "Passion pour l'Excellence Florale",
+      "text": "Depuis des années, Floral Zahrae sublime vos moments avec des créations uniques. Chaque bouquet est une œuvre d'art, composée avec soin par nos maîtres artisans fleuristes.",
+      "cta": "Notre Histoire"
+    },
+    "philosophy": {
+      "badge": "Notre Philosophie",
+      "title": "Plus que des Fleurs, des Émotions",
+      "item1": {
+        "title": "Artisanat",
+        "desc": "Chaque tige est sélectionnée avec rigueur pour sa qualité."
+      },
+      "item2": {
+        "title": "Design",
+        "desc": "Un style contemporain mêlant élégance et tradition."
+      },
+      "item3": {
+        "title": "Service",
+        "desc": "Une expérience sur-mesure pour chaque client."
+      }
+    },
+    "events": {
+      "badge": "Moments d'Exception",
+      "title": "Pour tous vos Événements",
+      "marriage": {
+        "title": "Mariages",
+        "desc": "Une touche florale romantique et élégante pour le plus beau jour de votre vie.",
+        "full_desc": "Pour votre mariage, Floral Zahrae crée une ambiance magique et inoubliable. Des bouquets de mariée personnalisés aux décorations de salle majestueuses, nous transformons chaque détail en un souvenir précieux.",
+        "features": [
+          "Bouquets de mariée sur-mesure",
+          "Décoration de cérémonie et de réception",
+          "Accessoires floraux (boutonnières, couronnes)",
+          "Conseils personnalisés et scénographie"
+        ]
+      },
+      "birthday": {
+        "title": "Anniversaires",
+        "desc": "Célébrez avec des couleurs et de la joie grâce à nos bouquets personnalisés.",
+        "full_desc": "Ajoutez une touche d'éclat à vos célébrations d'anniversaire. Nos compositions vibrantes et joyeuses sont conçues pour ravir et surprendre vos proches lors de leurs moments spéciaux.",
+        "features": [
+          "Compositions thématiques colorées",
+          "Boîtes à fleurs luxueuses",
+          "Livraison surprise à domicile",
+          "Personnalisation selon l'âge et les goûts"
+        ]
+      },
+      "corporate": {
+        "title": "Entreprises",
+        "desc": "Des arrangements professionnels pour vos bureaux et événements d'affaires.",
+        "full_desc": "Sublimez l'image de votre entreprise avec nos services floraux professionnels. De l'accueil de vos clients à la décoration de vos grands événements corporate, nous apportons fraîcheur et élégance à vos espaces de travail.",
+        "features": [
+          "Abonnements floraux pour bureaux",
+          "Décoration de lancements de produits",
+          "Cadeaux d'affaires élégants",
+          "Design floral pour halls d'accueil"
+        ]
+      }
+    },
+    "contact": {
+      "badge": "Contactez-nous",
+      "title": "Besoin d'un Conseil ?",
+      "subtitle": "Notre équipe est à votre disposition pour toute demande particulière.",
+      "info": "Informations",
+      "address": "Casablanca, Maroc",
+      "phone_label": "Téléphone",
+      "phone": "+212 762 818 313",
+      "form": {
+        "name": "Nom Complet",
+        "email": "Email",
+        "phone": "Téléphone",
+        "message": "Message",
+        "send": "Envoyer le Message",
+        "sending": "Envoi...",
+        "success": "Votre message a été envoyé avec succès !",
+        "error": "Une erreur est survenue. Veuillez réessayer.",
+        "templates": {
+          "marriage": "Bonjour, je souhaite obtenir un devis pour l'organisation florale de mon mariage. Pouvez-vous me recontacter ?",
+          "birthday": "Bonjour, je souhaite obtenir un devis pour une décoration florale d'anniversaire personnalisée. Merci !",
+          "corporate": "Bonjour, je souhaite obtenir un devis pour le fleurissement d'un événement d'entreprise. Merci de me contacter."
+        }
+      }
     }
   },
   "Navbar": {

@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
-import { Calendar, MapPin, Clock } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from '@/navigation';
 
 export default async function EventsPage({
     params
@@ -10,115 +11,100 @@ export default async function EventsPage({
     const { locale } = await params;
     setRequestLocale(locale);
 
-    const t = await getTranslations('Index');
+    const t = await getTranslations('Index.events');
 
-    const EVENTS = [
+    const services = [
         {
-            id: 1,
-            title_fr: "Atelier Art Floral",
-            title_ar: "ورشة تنسيق الزهور",
-            date: "2024-03-15",
-            time: "14:00 - 17:00",
-            location_fr: "Boutique FLORAL ZAHRAE",
-            location_ar: "بوتيك زهرة",
-            image: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=800&auto=format&fit=crop",
-            price: "450 DH"
+            key: 'marriage',
+            image: '/marriage_hero.jpg',
         },
         {
-            id: 2,
-            title_fr: "Festival des Roses",
-            title_ar: "مهرجان الورود",
-            date: "2024-04-20",
-            time: "09:00 - 18:00",
-            location_fr: "Jardins Majorelle",
-            location_ar: "حدائق ماجوريل",
-            image: "https://images.unsplash.com/photo-1490750967868-58cb75065ed4?q=80&w=800&auto=format&fit=crop",
-            price: "Gratuit"
+            key: 'birthday',
+            image: '/birthday_hero.jpg',
         },
         {
-            id: 3,
-            title_fr: "Exposition Printemps",
-            title_ar: "معرض الربيع",
-            date: "2024-05-10",
-            time: "10:00 - 20:00",
-            location_fr: "Palais des Congrès",
-            location_ar: "قصر المؤتمرات",
-            image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?q=80&w=800&auto=format&fit=crop",
-            price: "100 DH"
+            key: 'corporate',
+            image: '/corporate_hero.jpg',
         }
     ];
 
     return (
         <div className="min-h-screen bg-brand-cream/30">
             {/* Hero Section */}
-            <div className="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden bg-brand-sage-dark">
-                <div className="absolute inset-0 opacity-40">
+            <div className="relative h-[50vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-brand-sage-dark">
+                <div className="absolute inset-0 z-0">
                     <Image
-                        src="https://images.unsplash.com/photo-1507290439931-a861b5a38200?q=80&w=2000&auto=format&fit=crop"
+                        src="/herosection.png"
                         alt="Events Hero"
                         fill
-                        className="object-cover"
+                        className="object-cover opacity-60"
+                        priority
                     />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
                 </div>
-                <div className="relative z-10 text-center px-6">
-                    <h1 className="text-4xl md:text-6xl font-serif text-brand-cream mb-4">
-                        {locale === 'ar' ? 'فعالياتنا القادمة' : 'Nos Événements'}
+                <div className="relative z-10 text-center px-6 text-white max-w-4xl mx-auto">
+                    <span className="text-brand-gold uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
+                        {t('badge')}
+                    </span>
+                    <h1 className="text-5xl md:text-7xl font-serif mb-8 leading-tight">
+                        {t('title')}
                     </h1>
-                    <p className="text-xl text-brand-gold/90 font-light max-w-2xl mx-auto">
-                        {locale === 'ar'
-                            ? 'انضم إلينا في ورش العمل والمعارض الحصرية'
-                            : 'Rejoignez-nous pour nos ateliers exclusifs et expositions florales'}
-                    </p>
                 </div>
             </div>
 
-            {/* Events Grid */}
+            {/* Services Grid */}
             <div className="container mx-auto px-6 py-24">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {EVENTS.map((event) => (
-                        <div key={event.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-brand-rose/10">
-                            <div className="relative h-64 overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    {services.map((service) => (
+                        <div key={service.key} className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-rose/10 flex flex-col">
+                            <Link href={`/events/${service.key}`} className="relative h-80 overflow-hidden">
                                 <Image
-                                    src={event.image}
-                                    alt={locale === 'ar' ? event.title_ar : event.title_fr}
+                                    src={service.image}
+                                    alt={t(`${service.key}.title`)}
                                     fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
                                 />
-                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-                                    <span className="text-brand-sage-dark font-bold text-sm">
-                                        {event.price}
-                                    </span>
-                                </div>
-                            </div>
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                            </Link>
 
-                            <div className="p-8">
-                                <h3 className="text-2xl font-serif text-brand-sage-dark mb-4">
-                                    {locale === 'ar' ? event.title_ar : event.title_fr}
-                                </h3>
+                            <div className="p-10 flex-grow flex flex-col items-center text-center">
+                                <Link href={`/events/${service.key}`}>
+                                    <h3 className="text-3xl font-serif text-brand-sage-dark mb-6 hover:text-brand-gold transition-colors">
+                                        {t(`${service.key}.title`)}
+                                    </h3>
+                                </Link>
 
-                                <div className="space-y-3 text-brand-sage">
-                                    <div className="flex items-center gap-3">
-                                        <Calendar className="w-5 h-5 text-brand-gold" />
-                                        <span className="text-sm">{event.date}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <Clock className="w-5 h-5 text-brand-gold" />
-                                        <span className="text-sm">{event.time}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <MapPin className="w-5 h-5 text-brand-gold" />
-                                        <span className="text-sm">
-                                            {locale === 'ar' ? event.location_ar : event.location_fr}
-                                        </span>
-                                    </div>
-                                </div>
+                                <p className="text-brand-sage leading-relaxed mb-8 flex-grow italic">
+                                    "{t(`${service.key}.desc`)}"
+                                </p>
 
-                                <button className="w-full mt-8 py-3 bg-brand-sage/5 hover:bg-brand-sage-dark text-brand-sage-dark hover:text-brand-cream rounded-xl transition-all duration-300 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                                    {locale === 'ar' ? 'احجز مكانك' : 'Réserver votre place'}
-                                </button>
+                                <Link href={`/events/${service.key}`} className="w-full">
+                                    <button className="w-full py-4 px-6 border border-brand-sage-dark text-brand-sage-dark font-bold rounded-xl hover:bg-brand-sage-dark hover:text-white transition-all duration-300 uppercase tracking-widest text-xs flex items-center justify-center gap-2 group/btn">
+                                        Voir les détails
+                                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1 transition-transform" />
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     ))}
+                </div>
+
+                {/* Bottom CTA */}
+                <div className="mt-24 text-center bg-brand-sage-dark text-white rounded-3xl p-16 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                    <div className="relative z-10">
+                        <h2 className="text-3xl md:text-5xl font-serif mb-8">
+                            Un événement sur mesure ?
+                        </h2>
+                        <p className="text-brand-cream/80 max-w-2xl mx-auto mb-10 text-lg">
+                            Nos artisans fleuristes sont à votre écoute pour transformer vos idées en réalité florale époustouflante.
+                        </p>
+                        <Link href="/contact">
+                            <button className="px-12 py-5 bg-brand-gold text-white font-bold rounded-full hover:bg-white hover:text-brand-sage-dark transition-all duration-500 shadow-xl uppercase tracking-widest text-sm transform hover:scale-105">
+                                Prendre un rendez-vous
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

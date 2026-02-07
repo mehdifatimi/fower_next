@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ProductCard from '@/components/ProductCard';
 import { createClient } from '@/lib/supabase-server';
 import { getPublicImageUrl } from '@/lib/utils';
+import { Link } from '@/navigation';
 
 
 const MOCK_PRODUCTS = [
@@ -32,6 +33,12 @@ const MOCK_PRODUCTS = [
     category: 'Luxe'
   }
 ];
+
+import AboutSection from '@/components/home/AboutSection';
+import PhilosophySection from '@/components/home/PhilosophySection';
+import EventsSection from '@/components/home/EventsSection';
+import ContactSection from '@/components/home/ContactSection';
+import HeroSection from '@/components/home/HeroSection';
 
 export default async function Home({
   params
@@ -80,34 +87,18 @@ export default async function Home({
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden bg-brand-cream">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-brand-rose rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-brand-sage rounded-full blur-[100px]" />
-        </div>
+      <HeroSection />
 
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-brand-sage-dark mb-6 animate-fade-in">
-            {t('hero.title')}
-          </h1>
-          <p className="text-lg md:text-xl text-brand-sage max-w-2xl mx-auto mb-10 animate-fade-in [animation-delay:200ms]">
-            {t('hero.subtitle')}
-          </p>
-          <div className="animate-fade-in [animation-delay:400ms]">
-            <button className="px-8 py-4 bg-brand-sage-dark text-brand-cream font-medium rounded-full hover:bg-brand-sage transition-all transform hover:scale-105 shadow-lg uppercase tracking-widest text-sm">
-              {t('hero.cta')}
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* About Section */}
+      <AboutSection />
 
       {/* Featured Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-brand-gold uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Sélection Exclusive</span>
+            <span className="text-brand-gold uppercase tracking-[0.3em] text-xs font-bold mb-4 block">{t('featured.badge')}</span>
             <h2 className="text-4xl md:text-5xl font-serif text-brand-sage-dark mb-6">
-              Nos Fleurs Vedettes
+              {t('featured.title')}
             </h2>
             <div className="w-24 h-[1px] bg-brand-gold mx-auto" />
           </div>
@@ -119,6 +110,15 @@ export default async function Home({
           </div>
         </div>
       </section>
+
+      {/* Events Section */}
+      <EventsSection />
+
+      {/* Philosophy Section */}
+      <PhilosophySection />
+
+      {/* Contact Section */}
+      <ContactSection />
     </div>
   );
 }
