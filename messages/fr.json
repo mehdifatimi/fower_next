@@ -1,0 +1,19 @@
+{
+  "Index": {
+    "title": "Atar Al Ward - Boutique Florale Haut de Gamme",
+    "hero": {
+      "title": "L'élégance à fleur de peau",
+      "subtitle": "Découvrez nos créations florales artisanales pour vos moments d'exception.",
+      "cta": "Voir la boutique"
+    }
+  },
+  "Navbar": {
+    "home": "Accueil",
+    "shop": "Boutique",
+    "categories": "Catégories",
+    "about": "À propos",
+    "contact": "Contact",
+    "catalogue": "Catalogue",
+    "events": "Événements"
+  }
+}

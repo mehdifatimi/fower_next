@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-brand-rose: #E8D3D3;
+  --color-brand-rose-dark: #D4B6B6;
+  --color-brand-sage: #82947E;
+  --color-brand-sage-dark: #6B7C67;
+  --color-brand-cream: #F9F7F2;
+  --color-brand-gold: #D4AF37;
+  --color-brand-gold-muted: #B89B30;
+
+  /* UI Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Typography */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  
+  /* Utilities */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+
+:root {
+  --background: #F9F7F2; /* Cream */
+  --foreground: #2D342D; /* Dark Sage/Grey */
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+}
