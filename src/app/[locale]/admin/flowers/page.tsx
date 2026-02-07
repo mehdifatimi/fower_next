@@ -2,6 +2,10 @@ import { createClient } from '@/lib/supabase-server';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getPublicImageUrl } from '@/lib/utils';
+import DeleteFlowerButton from '@/components/admin/DeleteFlowerButton';
+
+
 
 export default async function AdminFlowersPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -9,7 +13,7 @@ export default async function AdminFlowersPage({ params }: { params: Promise<{ l
 
     const { data: flowers } = await supabase
         .from('flowers')
-        .select('*, categories(name_fr)')
+        .select('*, categories(name_fr), flower_variants(*)')
         .order('created_at', { ascending: false });
 
     return (
@@ -46,7 +50,7 @@ export default async function AdminFlowersPage({ params }: { params: Promise<{ l
                                 <td className="px-6 py-4">
                                     <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-brand-cream">
                                         {flower.images?.m ? (
-                                            <Image src={flower.images.m} alt="" fill className="object-cover" />
+                                            <Image src={getPublicImageUrl(flower.images.m)} alt="" fill className="object-cover" />
                                         ) : (
                                             <span className="flex items-center justify-center h-full text-[10px] text-brand-sage opacity-50">N/A</span>
                                         )}
@@ -54,20 +58,36 @@ export default async function AdminFlowersPage({ params }: { params: Promise<{ l
                                 </td>
                                 <td className="px-6 py-4 font-medium text-brand-sage-dark">{flower.name_fr}</td>
                                 <td className="px-6 py-4 text-sm text-brand-sage">{flower.categories?.name_fr || 'Sans catégorie'}</td>
-                                <td className="px-6 py-4 text-sm font-bold">{flower.price} MAD</td>
+                                <td className="px-6 py-4 text-sm font-bold">
+                                    {flower.flower_variants?.length > 0 ? (
+                                        <>
+                                            {Math.min(...flower.flower_variants.map((v: any) => v.price))} - {Math.max(...flower.flower_variants.map((v: any) => v.price))} MAD
+                                        </>
+                                    ) : (
+                                        <>{flower.price} MAD</>
+                                    )}
+                                </td>
                                 <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold ${flower.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                        {flower.stock > 0 ? `En Stock (${flower.stock})` : 'Rupture'}
-                                    </span>
+                                    {flower.flower_variants?.length > 0 ? (
+                                        <span className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold bg-blue-100 text-blue-700`}>
+                                            {flower.flower_variants.reduce((acc: number, v: any) => acc + v.stock, 0)} Total
+                                        </span>
+                                    ) : (
+                                        <span className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold ${flower.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                            {flower.stock > 0 ? `En Stock (${flower.stock})` : 'Rupture'}
+                                        </span>
+                                    )}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex justify-end space-x-2">
-                                        <button className="p-2 text-brand-sage hover:text-brand-gold transition-colors">
+                                        <Link
+                                            href={`/${locale}/admin/flowers/${flower.id}/edit`}
+                                            className="p-2 text-brand-sage hover:text-brand-gold transition-colors"
+                                            title="Modifier"
+                                        >
                                             <Edit className="w-4 h-4" />
-                                        </button>
-                                        <button className="p-2 text-brand-sage hover:text-red-500 transition-colors">
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
+                                        </Link>
+                                        <DeleteFlowerButton id={flower.id} />
                                     </div>
                                 </td>
                             </tr>

@@ -49,8 +49,7 @@ export default function ContactPage() {
                                 <div>
                                     <h3 className="text-lg font-serif mb-2">Notre Boutique</h3>
                                     <p className="text-brand-sage leading-relaxed">
-                                        123 Boulevard des Fleurs, Quartier Racine<br />
-                                        Casablanca, Maroc
+                                        N, TAW10, lot Iguder, 48 AV Alla El Fassi Marrakech 40000, Morocco<br />
                                     </p>
                                 </div>
                             </div>
@@ -61,7 +60,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-serif mb-2">Téléphone</h3>
-                                    <p className="text-brand-sage">+212 5XX XX XX XX</p>
+                                    <p className="text-brand-sage">+212 762818313</p>
                                 </div>
                             </div>
 
@@ -71,7 +70,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-serif mb-2">Email</h3>
-                                    <p className="text-brand-sage">contact@ataralward.com</p>
+                                    <p className="text-brand-sage">contact@floralzahrae.com</p>
                                 </div>
                             </div>
                         </div>

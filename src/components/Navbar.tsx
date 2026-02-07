@@ -3,16 +3,26 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/navigation';
 import { ShoppingBag, Menu, X, Globe } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useCart } from '@/store/useCart';
 
 export default function Navbar() {
     const t = useTranslations('Navbar');
     const locale = useLocale();
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+
+    const items = useCart((state) => state.items);
+    const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
+
+    // Handle hydration mismatch for persisted store
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggleLanguage = () => {
         const nextLocale = locale === 'ar' ? 'fr' : 'ar';
@@ -61,12 +71,18 @@ export default function Navbar() {
                         <span className="text-xs font-medium uppercase">{locale === 'ar' ? 'FR' : 'AR'}</span>
                     </button>
 
-                    <button className="relative p-2 text-brand-sage hover:text-brand-gold transition-colors">
+                    <Link
+                        href="/cart"
+                        className="relative p-2 text-brand-sage hover:text-brand-gold transition-colors"
+                        title={locale === 'ar' ? 'سلة المشتريات' : 'Votre Panier'}
+                    >
                         <ShoppingBag className="w-6 h-6" />
-                        <span className="absolute top-0 right-0 w-4 h-4 bg-brand-gold text-white text-[10px] flex items-center justify-center rounded-full">
-                            0
-                        </span>
-                    </button>
+                        {mounted && itemCount > 0 && (
+                            <span className="absolute top-0 right-0 w-4 h-4 bg-brand-gold text-white text-[10px] flex items-center justify-center rounded-full animate-in zoom-in duration-300">
+                                {itemCount}
+                            </span>
+                        )}
+                    </Link>
 
                     <button
                         className="md:hidden p-2 text-brand-sage"

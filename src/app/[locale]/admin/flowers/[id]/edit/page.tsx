@@ -5,6 +5,8 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ChevronLeft, Save } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import ImageUpload from '@/components/admin/ImageUpload';
+
 
 export default async function EditFlowerPage({
     params
@@ -16,10 +18,10 @@ export default async function EditFlowerPage({
 
     const supabase = await createClient();
 
-    // Fetch Flower
+    // Fetch Flower with variants
     const { data: flower } = await supabase
         .from('flowers')
-        .select('*')
+        .select('*, flower_variants(*)')
         .eq('id', id)
         .single();
 
@@ -32,7 +34,7 @@ export default async function EditFlowerPage({
         .from('categories')
         .select('id, name_fr, name_ar');
 
-    const updateFlowerWithId = updateFlower.bind(null, id);
+    const updateFlowerWithId = updateFlower.bind(null, id, locale);
 
     return (
         <div className="p-8 max-w-4xl mx-auto">
@@ -141,15 +143,52 @@ export default async function EditFlowerPage({
                 </div>
 
                 <div className="space-y-6 pt-6 border-t border-brand-rose/10">
-                    <div>
-                        <label className="block text-xs uppercase tracking-widest font-bold text-brand-sage mb-2">URL de l'image</label>
-                        <input
-                            name="imageUrl"
-                            defaultValue={flower.images?.m}
-                            type="url"
-                            className="w-full bg-brand-cream/20 border border-brand-rose/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
-                        />
+                    <h3 className="text-xs uppercase tracking-widest font-bold text-brand-gold">Variantes par Taille (S, M, L)</h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {['S', 'M', 'L'].map((size) => {
+                            const variant = flower.flower_variants?.find((v: any) => v.size === size);
+                            return (
+                                <div key={size} className="space-y-4 p-6 bg-brand-cream/10 rounded-2xl border border-brand-rose/10">
+                                    <div className="flex items-center justify-between border-b border-brand-rose/10 pb-2">
+                                        <span className="text-lg font-serif text-brand-sage-dark">Taille {size}</span>
+                                        <span className="text-[10px] uppercase tracking-widest text-brand-gold font-bold">Variante</span>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] uppercase tracking-widest font-bold text-brand-sage mb-1">Prix ({size})</label>
+                                        <input
+                                            name={`price_${size.toLowerCase()}`}
+                                            type="number"
+                                            step="0.01"
+                                            defaultValue={variant?.price}
+                                            placeholder="0.00"
+                                            className="w-full bg-white border border-brand-rose/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] uppercase tracking-widest font-bold text-brand-sage mb-1">Stock ({size})</label>
+                                        <input
+                                            name={`stock_${size.toLowerCase()}`}
+                                            type="number"
+                                            defaultValue={variant?.stock}
+                                            placeholder="0"
+                                            className="w-full bg-white border border-brand-rose/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
+                                        />
+                                    </div>
+                                    <div>
+                                        <ImageUpload
+                                            name={`image_${size.toLowerCase()}`}
+                                            defaultValue={variant?.image_url}
+                                            label={`Image (${size})`}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
+                </div>
+
+                <div className="space-y-6 pt-6 border-t border-brand-rose/10">
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <input
                             name="featured"

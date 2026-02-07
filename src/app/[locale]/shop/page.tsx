@@ -1,24 +1,8 @@
 import { setRequestLocale } from 'next-intl/server';
 import ProductCard from '@/components/ProductCard';
 import { createClient } from '@/lib/supabase-server';
+import { getPublicImageUrl } from '@/lib/utils';
 import ShopFilters from '@/components/ShopFilters';
-
-// Helper to validate and get proper image URL
-function getValidImageUrl(images: any): string {
-    const fallback = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=800&auto=format&fit=crop';
-    if (!images) return fallback;
-
-    const imageUrl = images.m || images.xl || images.s;
-    if (!imageUrl) return fallback;
-
-    // Only return if it's a valid HTTP/HTTPS URL
-    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-        return imageUrl;
-    }
-
-    // Return fallback for local paths
-    return fallback;
-}
 
 export default async function ShopPage({
     params,
@@ -38,10 +22,10 @@ export default async function ShopPage({
         .from('categories')
         .select('id, name_fr, name_ar, slug');
 
-    // Fetch Flowers with filters
+    // Fetch Flowers with filters and variants
     let flowerQuery = supabase
         .from('flowers')
-        .select('*, categories!inner(name_fr, name_ar, slug)');
+        .select('*, categories!inner(name_fr, name_ar, slug), flower_variants(*)');
 
     if (category && category !== 'all') {
         flowerQuery = flowerQuery.eq('categories.slug', category);
@@ -71,19 +55,33 @@ export default async function ShopPage({
                     <div className="flex-grow">
                         {flowers && flowers.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                                {flowers.map((f: any) => (
-                                    <ProductCard
-                                        key={f.id}
-                                        product={{
-                                            id: f.id,
-                                            name_ar: f.name_ar,
-                                            name_fr: f.name_fr,
-                                            price: Number(f.price),
-                                            image: getValidImageUrl(f.images),
-                                            category: locale === 'ar' ? f.categories?.name_ar : f.categories?.name_fr,
-                                        }}
-                                    />
-                                ))}
+                                {flowers.map((f: any) => {
+                                    // Logic to prefer Size L variant
+                                    const variantL = f.flower_variants?.find((v: any) => v.size === 'L');
+                                    const variantM = f.flower_variants?.find((v: any) => v.size === 'M');
+
+                                    const displayPrice = variantL?.price || variantM?.price || f.price;
+                                    const displayImage = variantL?.image_url || variantM?.image_url || f.images?.m;
+
+                                    return (
+                                        <ProductCard
+                                            key={f.id}
+                                            product={{
+                                                id: f.id,
+                                                name_ar: f.name_ar,
+                                                name_fr: f.name_fr,
+                                                price: Number(displayPrice),
+                                                image: getPublicImageUrl(displayImage),
+                                                category: locale === 'ar' ? f.categories?.name_ar : f.categories?.name_fr,
+                                                variants: f.flower_variants?.map((v: any) => ({
+                                                    size: v.size,
+                                                    price: Number(v.price),
+                                                    image_url: getPublicImageUrl(v.image_url)
+                                                }))
+                                            }}
+                                        />
+                                    );
+                                })}
                             </div>
                         ) : (
                             <div className="h-96 flex flex-col items-center justify-center text-brand-sage text-center">

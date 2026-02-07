@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, Filter, X } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function ShopFilters({
@@ -17,6 +17,18 @@ export default function ShopFilters({
     const pathname = usePathname();
     const [isPending, startTransition] = useTransition();
     const [query, setQuery] = useState(searchParams.get('query') || '');
+
+    // Debounced search
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const currentQuery = searchParams.get('query') || '';
+            if (query !== currentQuery) {
+                updateFilters('query', query || null);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [query]);
 
     const updateFilters = (key: string, value: string | null) => {
         const params = new URLSearchParams(searchParams);
@@ -33,7 +45,7 @@ export default function ShopFilters({
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        updateFilters('query', query || null);
+        // The search is now handled automatically by the useEffect
     };
 
     const currentCategory = searchParams.get('category') || 'all';

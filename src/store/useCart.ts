@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type FlowerSize = 'S' | 'M' | 'XL';
+export type FlowerSize = 'S' | 'M' | 'L' | 'XL';
 
 export interface CartItem {
     id: string;

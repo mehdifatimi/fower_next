@@ -14,8 +14,8 @@ export default function Footer() {
                 <div>
                     <h4 className="text-sm uppercase tracking-widest font-bold mb-6 text-brand-gold">Contact</h4>
                     <ul className="space-y-4 text-brand-cream/70">
-                        <li>Casablanca, Maroc</li>
-                        <li>+212 5XX XX XX XX</li>
+                        <li>N, TAW10, lot Iguder, 48 AV Alla El Fassi Marrakech 40000, Morocco</li>
+                        <li>+212 762818313</li>
                         <li>contact@floralzahrae.com</li>
                     </ul>
                 </div>
@@ -31,7 +31,7 @@ export default function Footer() {
             </div>
 
             <div className="container mx-auto px-6 mt-20 pt-8 border-t border-brand-cream/10 text-center text-xs text-brand-cream/40">
-                &copy; {currentYear} FLORAL ZAHRAE. Tous droits réservés.
+                &copy; {currentYear} C-Digital. Tous droits réservés.
             </div>
         </footer>
     );

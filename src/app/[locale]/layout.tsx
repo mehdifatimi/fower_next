@@ -46,7 +46,7 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} antialiased selection:bg-brand-rose selection:text-brand-sage-dark min-h-screen flex flex-col`}
       >
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar />
           <main className="flex-grow">
             {children}

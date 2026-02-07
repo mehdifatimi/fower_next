@@ -4,6 +4,8 @@ import { createFlower } from '@/app/actions/flowers';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { ChevronLeft, Save } from 'lucide-react';
+import ImageUpload from '@/components/admin/ImageUpload';
+
 
 export default async function NewFlowerPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -14,6 +16,8 @@ export default async function NewFlowerPage({ params }: { params: Promise<{ loca
     const { data: categories } = await supabase
         .from('categories')
         .select('id, name_fr, name_ar');
+
+    const createFlowerWithLocale = createFlower.bind(null, locale);
 
     return (
         <div className="p-8 max-w-4xl mx-auto">
@@ -30,7 +34,7 @@ export default async function NewFlowerPage({ params }: { params: Promise<{ loca
                 </div>
             </div>
 
-            <form action={createFlower} className="space-y-8 bg-white p-10 rounded-3xl shadow-xl shadow-brand-rose/5 border border-brand-rose/10">
+            <form action={createFlowerWithLocale} className="space-y-8 bg-white p-10 rounded-3xl shadow-xl shadow-brand-rose/5 border border-brand-rose/10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* French Details */}
                     <div className="space-y-6">
@@ -115,15 +119,43 @@ export default async function NewFlowerPage({ params }: { params: Promise<{ loca
                 </div>
 
                 <div className="space-y-6 pt-6 border-t border-brand-rose/10">
-                    <div>
-                        <label className="block text-xs uppercase tracking-widest font-bold text-brand-sage mb-2">URL de l'image (Mockup)</label>
-                        <input
-                            name="imageUrl"
-                            placeholder="https://images.unsplash.com/..."
-                            type="url"
-                            className="w-full bg-brand-cream/20 border border-brand-rose/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
-                        />
+                    <h3 className="text-xs uppercase tracking-widest font-bold text-brand-gold">Variantes par Taille (S, M, L)</h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {['S', 'M', 'L'].map((size) => (
+                            <div key={size} className="space-y-4 p-6 bg-brand-cream/10 rounded-2xl border border-brand-rose/10">
+                                <div className="flex items-center justify-between border-b border-brand-rose/10 pb-2">
+                                    <span className="text-lg font-serif text-brand-sage-dark">Taille {size}</span>
+                                    <span className="text-[10px] uppercase tracking-widest text-brand-gold font-bold">Variante</span>
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] uppercase tracking-widest font-bold text-brand-sage mb-1">Prix ({size})</label>
+                                    <input
+                                        name={`price_${size.toLowerCase()}`}
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        className="w-full bg-white border border-brand-rose/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] uppercase tracking-widest font-bold text-brand-sage mb-1">Stock ({size})</label>
+                                    <input
+                                        name={`stock_${size.toLowerCase()}`}
+                                        type="number"
+                                        placeholder="0"
+                                        className="w-full bg-white border border-brand-rose/20 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-sage/30"
+                                    />
+                                </div>
+                                <div>
+                                    <ImageUpload name={`image_${size.toLowerCase()}`} label={`Image (${size})`} />
+                                </div>
+                            </div>
+                        ))}
                     </div>
+                </div>
+
+                <div className="space-y-6 pt-6 border-t border-brand-rose/10">
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <input
                             name="featured"

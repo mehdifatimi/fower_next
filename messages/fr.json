@@ -15,5 +15,20 @@
     "contact": "Contact",
     "catalogue": "Catalogue",
     "events": "Événements"
+  },
+  "Cart": {
+    "title": "Votre Panier",
+    "empty": "Votre panier est vide",
+    "cta": "Retour à la boutique",
+    "total": "Total",
+    "checkout": "Passer à la caisse"
+  },
+  "Checkout": {
+    "title": "Finaliser la commande",
+    "name": "Nom complet",
+    "phone": "Téléphone",
+    "address": "Adresse de livraison",
+    "message": "Message (Optionnel)",
+    "confirm": "Confirmer sur WhatsApp"
   }
 }

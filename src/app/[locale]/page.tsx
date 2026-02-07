@@ -1,6 +1,8 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ProductCard from '@/components/ProductCard';
 import { createClient } from '@/lib/supabase-server';
+import { getPublicImageUrl } from '@/lib/utils';
+
 
 const MOCK_PRODUCTS = [
   {
@@ -31,22 +33,6 @@ const MOCK_PRODUCTS = [
   }
 ];
 
-// Helper to validate and get proper image URL
-function getValidImageUrl(images: any): string {
-  if (!images) return MOCK_PRODUCTS[0].image;
-
-  const imageUrl = images.m || images.xl || images.s;
-  if (!imageUrl) return MOCK_PRODUCTS[0].image;
-
-  // Only return if it's a valid HTTP/HTTPS URL
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-    return imageUrl;
-  }
-
-  // Return fallback for local paths
-  return MOCK_PRODUCTS[0].image;
-}
-
 export default async function Home({
   params
 }: {
@@ -58,23 +44,37 @@ export default async function Home({
   const t = await getTranslations('Index');
   const supabase = await createClient();
 
-  // Fetch featured flowers
+  // Fetch featured flowers with variants
   const { data: flowers } = await supabase
     .from('flowers')
-    .select('*, categories(name_fr, name_ar)')
+    .select('*, categories(name_fr, name_ar), flower_variants(*)')
     .eq('featured', true)
     .limit(3);
 
   const displayProducts = flowers && flowers.length > 0
-    ? flowers.map((f: any) => ({
-      id: f.id,
-      name_ar: f.name_ar,
-      name_fr: f.name_fr,
-      price: Number(f.price),
-      image: getValidImageUrl(f.images),
-      category: locale === 'ar' ? f.categories?.name_ar : f.categories?.name_fr,
-      isNew: new Date(f.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000
-    }))
+    ? flowers.map((f: any) => {
+      // Logic to prefer Size L variant
+      const variantL = f.flower_variants?.find((v: any) => v.size === 'L');
+      const variantM = f.flower_variants?.find((v: any) => v.size === 'M');
+
+      const displayPrice = variantL?.price || variantM?.price || f.price;
+      const displayImage = variantL?.image_url || variantM?.image_url || f.images?.m;
+
+      return {
+        id: f.id,
+        name_ar: f.name_ar,
+        name_fr: f.name_fr,
+        price: Number(displayPrice),
+        image: getPublicImageUrl(displayImage),
+        category: locale === 'ar' ? f.categories?.name_ar : f.categories?.name_fr,
+        isNew: new Date(f.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000,
+        variants: f.flower_variants?.map((v: any) => ({
+          size: v.size,
+          price: Number(v.price),
+          image_url: getPublicImageUrl(v.image_url)
+        }))
+      };
+    })
     : MOCK_PRODUCTS;
 
   return (
