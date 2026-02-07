@@ -110,6 +110,18 @@
         "total": "المجموع الكلي",
         "checkout": "إتمام الطلب"
     },
+    "Shop": {
+        "details": "تفاصيل المنتج",
+        "select_size": "اختر المقاس",
+        "add_to_cart": "أضف إلى السلة",
+        "added": "تمت الإضافة!",
+        "back": "العودة للمتجر",
+        "stock": "متوفر",
+        "out_of_stock": "غير متوفر",
+        "quantity": "الكمية",
+        "description": "الوصف",
+        "specifications": "المواصفات"
+    },
     "Checkout": {
         "title": "إتمام الطلب",
         "name": "الاسم الكامل",

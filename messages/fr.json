@@ -110,6 +110,18 @@
     "total": "Total",
     "checkout": "Passer à la caisse"
   },
+  "Shop": {
+    "details": "Détails du Produit",
+    "select_size": "Choisir la Taille",
+    "add_to_cart": "Ajouter au Panier",
+    "added": "Ajouté !",
+    "back": "Retour à la boutique",
+    "stock": "En stock",
+    "out_of_stock": "Rupture de stock",
+    "quantity": "Quantité",
+    "description": "Description",
+    "specifications": "Caractéristiques"
+  },
   "Checkout": {
     "title": "Finaliser la commande",
     "name": "Nom complet",
