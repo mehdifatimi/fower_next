@@ -34,7 +34,10 @@ export default async function EditFlowerPage({
         .from('categories')
         .select('id, name_fr, name_ar');
 
-    const updateFlowerWithId = updateFlower.bind(null, id, locale);
+    const updateFlowerWithId = async (formData: FormData) => {
+        "use server";
+        await updateFlower(id, locale, formData);
+    };
 
     return (
         <div className="p-8 max-w-4xl mx-auto">

@@ -17,7 +17,10 @@ export default async function NewFlowerPage({ params }: { params: Promise<{ loca
         .from('categories')
         .select('id, name_fr, name_ar');
 
-    const createFlowerWithLocale = createFlower.bind(null, locale);
+    const createFlowerWithLocale = async (formData: FormData) => {
+        "use server";
+        await createFlower(locale, formData);
+    };
 
     return (
         <div className="p-8 max-w-4xl mx-auto">
